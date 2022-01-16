@@ -52,3 +52,8 @@ On MacOS, this program requires you to allow explicit access to the Apple Access
 On MacOS Sierra, you can no longer add CLI apps to this dialog, so you should either use [macappshell](https://github.com/Xeoncross/macappshell) or similar program to create a proper .app (alternatively, you can add your entire terminal to this list and always invoke darwintiler from your terminal (not recommended for security reasons)).
 
 Background Image: [Kuvshinov Ilya](http://kuvshinov-ilya.deviantart.com/)
+
+## TODO
+
+- [ ] add "Center" option.
+- [ ] add karabiner caps lock -> `cmd+control+shift+option` binding suggestion.
