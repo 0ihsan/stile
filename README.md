@@ -58,3 +58,6 @@ Background Image: [Kuvshinov Ilya](http://kuvshinov-ilya.deviantart.com/)
 - [ ] add: option: "Center"
 - [ ] add: suggestion: karabiner caps lock -> `cmd+control+shift+option` binding
 - [ ] add: image: key bindings and window position relation.
+- [ ] add: service: launchctl plist file to the repo combine it with build process
+- [ ] add: package: homebrew
+- [ ] update: tidy up readme.md
