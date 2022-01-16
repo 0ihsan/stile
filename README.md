@@ -55,5 +55,6 @@ Background Image: [Kuvshinov Ilya](http://kuvshinov-ilya.deviantart.com/)
 
 ## TODO
 
-- [ ] add "Center" option.
-- [ ] add karabiner caps lock -> `cmd+control+shift+option` binding suggestion.
+- [ ] add: option: "Center"
+- [ ] add: suggestion: karabiner caps lock -> `cmd+control+shift+option` binding
+- [ ] add: image: key bindings and window position relation.
