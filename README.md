@@ -18,6 +18,35 @@ sudo make install
 make service
 ```
 
+## use
+
+use [karabiner](https://github.com/pqrs-org/Karabiner-Elements) to bind
+<kbd>ctrl</kbd>+<kbd>opt</kbd>+<kbd>cmd</kbd>+<kbd>shift</kbd> to
+<kbd>caps-lock</kbd> (or at least i do) so you don't get your fingers paralyzed.
+
+
+<kbd>mod</kbd> means <kbd>ctrl</kbd>+<kbd>opt</kbd>+<kbd>cmd</kbd>+<kbd>shift</kbd>
+(aka <kbd>caps-lock</kbd>)
+
+---
+
+- <kbd>mod</kbd><kbd>y</kbd>: top left quarter
+- <kbd>mod</kbd><kbd>h</kbd>: left half
+- <kbd>mod</kbd><kbd>n</kbd>: bottom left quarter
+
+---
+
+- <kbd>mod</kbd><kbd>i</kbd>: top right quarter
+- <kbd>mod</kbd><kbd>l</kbd>: right half
+- <kbd>mod</kbd><kbd>m</kbd>: bottom right quarter
+
+---
+
+- <kbd>mod</kbd><kbd>f</kbd>: full screen (w/gaps)
+- <kbd>mod</kbd><kbd>s</kbd>: centered medium size
+- <kbd>mod</kbd><kbd>a</kbd>: centered small size
+- <kbd>mod</kbd><kbd>c</kbd>: center without changing window size
+
 ## uninstall
 ```sh
 sudo make disable-service
