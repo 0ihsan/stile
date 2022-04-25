@@ -1,5 +1,5 @@
 float winratio = 4.0/3.0;
-   int winsize = 730;
+int squaresize = 730; // height in KEY_S mode. actually 4/3 not square. lol.
        int gap = 30;
 
 

@@ -21,40 +21,21 @@ move_current_window(int center, int x, int y, int w, int h)
 	AXValueRef temp;
 	AXUIElementRef current_app = get_frontmost_app();
 	AXUIElementRef current_win;
+	AXValueRef tempforsize;
 	CGSize winsiz;
 	CGPoint winpos;
 
-	int err = AXUIElementCopyAttributeValue(current_app,
+	AXUIElementCopyAttributeValue(current_app,
 	                              kAXFocusedWindowAttribute,
 	                              (CFTypeRef*)&current_win);
-	switch (err) {
-	case (kAXErrorNoValue):
-		fprintf(stderr, "The specified attribute does not have a value.\n");
-	case (kAXErrorIllegalArgument):
-		fprintf(stderr, "The value is not recognized by the accessible application or one of the other arguments is an illegal value.\n");
-		break;
-	case (kAXErrorAttributeUnsupported):
-		fprintf(stderr, "The specified AXUIElementRef does not support the specified attribute.\n");
-		break;
-	case (kAXErrorInvalidUIElement):
-		fprintf(stderr, "The AXUIElementRef is invalid.\n");
-		break;
-	case (kAXErrorCannotComplete):
-		fprintf(stderr, "The function cannot complete because messaging has failed in some way.\n");
-		break;
-	case (kAXErrorNotImplemented):
-		fprintf(stderr, "The process does not fully support the accessibility API.\n");
-		break;
-	}
 
 	if (center) {
-		printf("centering\n");
 		AXUIElementCopyAttributeValue(current_win,
-		                              kAXValueCGSizeType, (CFTypeRef*)&temp);
-		printf("?????????????");
-		winpos.x = 300;
-		winpos.y = 300;
-		AXValueGetValue(temp, kAXValueCGSizeType, &winsiz);
+	                              	kAXSizeAttribute,
+	                              	(CFTypeRef*)&tempforsize);
+		AXValueGetValue(tempforsize, kAXValueCGSizeType, &winsiz);
+		winpos.x = (dw-(winsiz.width))/2;
+		winpos.y = (dh-winsiz.height)/2;
 	} else {
 		winpos.x = x;
 		winpos.y = y;
@@ -63,46 +44,11 @@ move_current_window(int center, int x, int y, int w, int h)
 	}
 
 	temp = AXValueCreate(kAXValueCGPointType, &winpos);
-	err = AXUIElementSetAttributeValue(current_win, kAXPositionAttribute, temp);
-	printf("%d\n", err);
-	switch (err) {
-	case (kAXErrorIllegalArgument):
-		fprintf(stderr, "The value is not recognized by the accessible application or one of the other arguments is an illegal value.\n");
-		break;
-	case (kAXErrorAttributeUnsupported):
-		fprintf(stderr, "The specified AXUIElementRef does not support the specified attribute.\n");
-		break;
-	case (kAXErrorInvalidUIElement):
-		fprintf(stderr, "The AXUIElementRef is invalid.\n");
-		break;
-	case (kAXErrorCannotComplete):
-		fprintf(stderr, "The function cannot complete because messaging has failed in some way.\n");
-		break;
-	case (kAXErrorNotImplemented):
-		fprintf(stderr, "The process does not fully support the accessibility API.\n");
-		break;
-	}
+	AXUIElementSetAttributeValue(current_win, kAXPositionAttribute, temp);
 	CFRelease(temp);
 
 	temp = AXValueCreate(kAXValueCGSizeType, &winsiz);
-	err = AXUIElementSetAttributeValue(current_win, kAXSizeAttribute, temp);
-	switch (err) {
-	case (kAXErrorIllegalArgument):
-		fprintf(stderr, "The value is not recognized by the accessible application or one of the other arguments is an illegal value.\n");
-		break;
-	case (kAXErrorAttributeUnsupported):
-		fprintf(stderr, "The specified AXUIElementRef does not support the specified attribute.\n");
-		break;
-	case (kAXErrorInvalidUIElement):
-		fprintf(stderr, "The AXUIElementRef is invalid.\n");
-		break;
-	case (kAXErrorCannotComplete):
-		fprintf(stderr, "The function cannot complete because messaging has failed in some way.\n");
-		break;
-	case (kAXErrorNotImplemented):
-		fprintf(stderr, "The process does not fully support the accessibility API.\n");
-		break;
-	}
+	AXUIElementSetAttributeValue(current_win, kAXSizeAttribute, temp);
 	CFRelease(temp);
 }
 
