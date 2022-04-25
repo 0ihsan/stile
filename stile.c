@@ -106,7 +106,7 @@ static CGEventRef event_handler(CGEventTapProxy p, CGEventType t, CGEventRef eve
 
 			// top left quarter
 			case (KEY_Y):
-				move_current_window(2, gap,            gap,
+				move_current_window(0, gap,            gap,
 				                       (dw/2)-gap*1.5, (dh/2)-(gap*1.5));
 				return 0;
 
