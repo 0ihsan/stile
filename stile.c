@@ -4,6 +4,7 @@
 #include <Carbon/Carbon.h>
 
 int _,dw,dh; // desktop with, desktop height (will be set in init())
+int smallwidth;
 
 
 static AXUIElementRef
@@ -34,7 +35,7 @@ move_current_window(int center, int x, int y, int w, int h)
 	                              	kAXSizeAttribute,
 	                              	(CFTypeRef*)&tempforsize);
 		AXValueGetValue(tempforsize, kAXValueCGSizeType, &winsiz);
-		winpos.x = (dw-(winsiz.width))/2;
+		winpos.x = (dw-winsiz.width)/2;
 		winpos.y = (dh-winsiz.height)/2;
 	} else {
 		winpos.x = x;
@@ -71,22 +72,21 @@ static CGEventRef event_handler(CGEventTapProxy p, CGEventType t, CGEventRef eve
 
 	if (modifiers == MOD_CMD+MOD_CTRL+MOD_OPT+MOD_SHIFT)
 		switch (keycode) {
+
 			// center fixed small
 			case (KEY_A):
 				move_current_window(0,
-				                    (dw-dw*0.495)/2,
-				                    (dh-(dh*0.495*4.0/3.0))/2,
-	                             dw*0.495,
-	                             dh*0.495*4.0/3.0);
+				                    (dw-smallwidth)/2, (dh-smallwidth)/2,
+				                    smallwidth,        smallwidth);
 				return 0;
 
 			// center medium (ratio at config.h)
 			case (KEY_S):
 				move_current_window(0,
-				                    (dw-(squaresize*winratio))/2,
-				                    (dh-squaresize)/2,
-	                             squaresize*winratio,
-	                             squaresize);
+				                    (dw-(mediumheight*winratio))/2,
+				                    (dh-mediumheight)/2,
+				                    mediumheight*winratio,
+				                    mediumheight);
 				return 0;
 
 			// full screen w/gaps
@@ -173,6 +173,8 @@ init()
 		return 1;
 	}
 	get_display_bounds(&_, &_, &dw, &dh);
+	smallwidth = (dw*0.4916); // perfectly selctd for signcolumn+80column rule.
+	                          // nice.
 	return 0;
 }
 
