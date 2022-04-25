@@ -23,7 +23,7 @@ service: install
 	launchctl kickstart -kp gui/501/com.0ihsan.stile
 
 disable-service:
-	launchctl kill 15 gui/501/com.0ihsan.stile
+	pgrep stile && launchctl kill 15 gui/501/com.0ihsan.stile
 	launchctl disable gui/501/com.0ihsan.stile
 	launchctl bootout gui/501 ${HOME}/Library/LaunchAgents/com.0ihsan.stile.plist
 	rm -rf ${HOME}/Library/LaunchAgents/com.0ihsan.stile.plist
