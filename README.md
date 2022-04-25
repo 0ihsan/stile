@@ -17,6 +17,10 @@ suckless macos window tiler that works and compiles without shit.
 sudo make install
 make service
 ```
+then allow access to `stile` in Apple Accessibility Services API
+```
+Preferences -> Security & Privacy -> Lock Icon -> Accessibility -> + -> /usr/local/bin/stile
+```
 
 ## use
 
@@ -47,21 +51,15 @@ use [karabiner](https://github.com/pqrs-org/Karabiner-Elements) to bind
 - <kbd>mod</kbd><kbd>a</kbd>: centered small size
 - <kbd>mod</kbd><kbd>c</kbd>: center without changing window size
 
+
 ## uninstall
 ```sh
 sudo make disable-service
 sudo make uninstall
 ```
 
-#### macOS permissions
-- allow access to the Apple Accessibility Services API (Preferences -> Security
-  and Privacy).
-
 ## todo
 
-- [X] add: option: "center"
-- [X] add: service: launchctl plist file to the repo
-- [ ] add: suggestion: karabiner caps lock -> `cmd+control+shift+option` binding
 - [ ] add: package: homebrew
 
 inspired/reduced from [darwintiler](https://github.com/veryjos/darwintiler)
