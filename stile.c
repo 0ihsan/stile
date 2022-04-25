@@ -71,6 +71,16 @@ static CGEventRef event_handler(CGEventTapProxy p, CGEventType t, CGEventRef eve
 
 	if (modifiers == MOD_CMD+MOD_CTRL+MOD_OPT+MOD_SHIFT)
 		switch (keycode) {
+			// center fixed small
+			case (KEY_A):
+				move_current_window(0,
+				                    (dw-dw*0.495)/2,
+				                    (dh-(dh*0.495*4.0/3.0))/2,
+	                             dw*0.495,
+	                             dh*0.495*4.0/3.0);
+				return 0;
+
+			// center medium (ratio at config.h)
 			case (KEY_S):
 				move_current_window(0,
 				                    (dw-(squaresize*winratio))/2,
@@ -79,13 +89,51 @@ static CGEventRef event_handler(CGEventTapProxy p, CGEventType t, CGEventRef eve
 	                             squaresize);
 				return 0;
 
+			// full screen w/gaps
 			case (KEY_F):
-				move_current_window(0, gap, gap, dw-(gap*2), dh-(gap*2));
+				move_current_window(0, gap, gap, dw-gap*2, dh-gap*2);
 				return 0;
 
+			// center (same size)
 			case (KEY_C):
 				move_current_window(1, 0,0,0,0); // 1:center
 				return 0;
+
+			// left half
+			case (KEY_H):
+				move_current_window(0, gap, gap, (dw/2)-gap*1.5, dh-(gap*2));
+				return 0;
+
+			// top left quarter
+			case (KEY_Y):
+				move_current_window(2, gap,            gap,
+				                       (dw/2)-gap*1.5, (dh/2)-(gap*1.5));
+				return 0;
+
+			// bottom left quarter
+			case (KEY_B):
+				move_current_window(0, gap,              (dh/2)+(gap/2),
+				                       (dw/2)-(gap*1.5), (dh/2)-(gap*1.5));
+				return 0;
+
+			// right half
+			case (KEY_L):
+				move_current_window(0, (dw/2)+(gap/2), gap,
+				                       (dw/2)-(gap*1.5), dh-(gap*2));
+				return 0;
+
+			// top right quarter
+			case (KEY_I):
+				move_current_window(0, (dw/2)+(gap/2), gap,
+				                       (dw/2)-(gap*1.5), (dh/2)-(gap*1.5));
+				return 0;
+
+			// bottom right quarter
+			case (KEY_M):
+				move_current_window(0, (dw/2)+(gap/2),   (dh/2)+(gap/2),
+				                       (dw/2)-(gap*1.5), (dh/2)-(gap*1.5));
+				return 0;
+
 		}
 
 	return event;
