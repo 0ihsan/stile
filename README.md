@@ -9,7 +9,7 @@ suckless macos window tiler that works and compiles without shit.
 - written in plain C.
 - simple as fuck.
 - no shit.
-- does the job.
+- does the job. ({quarter, half, mono} tiling, pixel perfect centering)
 
 ## install
 
