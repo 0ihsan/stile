@@ -15,22 +15,24 @@ suckless macos window tiler that works and compiles without shit.
 
 ```sh
 sudo make install
+make service
 ```
 
 ## uninstall
 ```sh
+sudo make disable-service
 sudo make uninstall
 ```
 
-#### MacOS Permissions
+#### macOS permissions
 - allow access to the Apple Accessibility Services API (Preferences -> Security
   and Privacy).
 
 ## todo
 
-- [ ] add: option: "center"
+- [X] add: option: "center"
+- [X] add: service: launchctl plist file to the repo
 - [ ] add: suggestion: karabiner caps lock -> `cmd+control+shift+option` binding
-- [ ] add: service: launchctl plist file to the repo
 - [ ] add: package: homebrew
 
 inspired/reduced from [darwintiler](https://github.com/veryjos/darwintiler)
