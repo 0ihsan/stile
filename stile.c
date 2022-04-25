@@ -6,6 +6,145 @@
 int _,dw,dh; // desktop with, desktop height (will be set in init())
 
 
+static AXUIElementRef
+get_frontmost_app()
+{
+	pid_t pid; ProcessSerialNumber psn;
+	GetFrontProcess(&psn); GetProcessPID(&psn, &pid);
+	return AXUIElementCreateApplication(pid);
+}
+
+
+void
+move_current_window(int center, int x, int y, int w, int h)
+{
+	AXValueRef temp;
+	AXUIElementRef current_app = get_frontmost_app();
+	AXUIElementRef current_win;
+	CGSize winsiz;
+	CGPoint winpos;
+
+	int err = AXUIElementCopyAttributeValue(current_app,
+	                              kAXFocusedWindowAttribute,
+	                              (CFTypeRef*)&current_win);
+	switch (err) {
+	case (kAXErrorNoValue):
+		fprintf(stderr, "The specified attribute does not have a value.\n");
+	case (kAXErrorIllegalArgument):
+		fprintf(stderr, "The value is not recognized by the accessible application or one of the other arguments is an illegal value.\n");
+		break;
+	case (kAXErrorAttributeUnsupported):
+		fprintf(stderr, "The specified AXUIElementRef does not support the specified attribute.\n");
+		break;
+	case (kAXErrorInvalidUIElement):
+		fprintf(stderr, "The AXUIElementRef is invalid.\n");
+		break;
+	case (kAXErrorCannotComplete):
+		fprintf(stderr, "The function cannot complete because messaging has failed in some way.\n");
+		break;
+	case (kAXErrorNotImplemented):
+		fprintf(stderr, "The process does not fully support the accessibility API.\n");
+		break;
+	}
+
+	if (center) {
+		printf("centering\n");
+		AXUIElementCopyAttributeValue(current_win,
+		                              kAXValueCGSizeType, (CFTypeRef*)&temp);
+		printf("?????????????");
+		winpos.x = 300;
+		winpos.y = 300;
+		AXValueGetValue(temp, kAXValueCGSizeType, &winsiz);
+	} else {
+		winpos.x = x;
+		winpos.y = y;
+		winsiz.width  = w;
+		winsiz.height = h;
+	}
+
+	temp = AXValueCreate(kAXValueCGPointType, &winpos);
+	err = AXUIElementSetAttributeValue(current_win, kAXPositionAttribute, temp);
+	printf("%d\n", err);
+	switch (err) {
+	case (kAXErrorIllegalArgument):
+		fprintf(stderr, "The value is not recognized by the accessible application or one of the other arguments is an illegal value.\n");
+		break;
+	case (kAXErrorAttributeUnsupported):
+		fprintf(stderr, "The specified AXUIElementRef does not support the specified attribute.\n");
+		break;
+	case (kAXErrorInvalidUIElement):
+		fprintf(stderr, "The AXUIElementRef is invalid.\n");
+		break;
+	case (kAXErrorCannotComplete):
+		fprintf(stderr, "The function cannot complete because messaging has failed in some way.\n");
+		break;
+	case (kAXErrorNotImplemented):
+		fprintf(stderr, "The process does not fully support the accessibility API.\n");
+		break;
+	}
+	CFRelease(temp);
+
+	temp = AXValueCreate(kAXValueCGSizeType, &winsiz);
+	err = AXUIElementSetAttributeValue(current_win, kAXSizeAttribute, temp);
+	switch (err) {
+	case (kAXErrorIllegalArgument):
+		fprintf(stderr, "The value is not recognized by the accessible application or one of the other arguments is an illegal value.\n");
+		break;
+	case (kAXErrorAttributeUnsupported):
+		fprintf(stderr, "The specified AXUIElementRef does not support the specified attribute.\n");
+		break;
+	case (kAXErrorInvalidUIElement):
+		fprintf(stderr, "The AXUIElementRef is invalid.\n");
+		break;
+	case (kAXErrorCannotComplete):
+		fprintf(stderr, "The function cannot complete because messaging has failed in some way.\n");
+		break;
+	case (kAXErrorNotImplemented):
+		fprintf(stderr, "The process does not fully support the accessibility API.\n");
+		break;
+	}
+	CFRelease(temp);
+}
+
+
+/* key event handler `return 0` means don't pass the shortcut to the rest */
+static CGEventRef event_handler(CGEventTapProxy p, CGEventType t, CGEventRef event, void* r) {
+	int repeating = CGEventGetIntegerValueField(event,kCGKeyboardEventAutorepeat);
+	int keycode   = CGEventGetIntegerValueField(event,kCGKeyboardEventKeycode);
+	int modifiers = (int)CGEventGetFlags(event);
+
+	modifiers &= (kCGEventFlagMaskShift   | kCGEventFlagMaskAlternate |
+		           kCGEventFlagMaskCommand | kCGEventFlagMaskControl   |
+		           kCGEventFlagMaskSecondaryFn);
+
+
+	/* // UNCOMMENT TO ANALYSE KEY CODES (EVENT VIEWER)
+	printf("is repeating: %d\n", repeating);
+	printf("     keycode: %d\n", keycode);
+	printf("   modifiers: %d\n\n", modifiers); */
+
+	if (modifiers == MOD_CMD+MOD_CTRL+MOD_OPT+MOD_SHIFT)
+		switch (keycode) {
+			case (KEY_S):
+				move_current_window(0,
+				                    (dw-(squaresize*winratio))/2,
+				                    (dh-squaresize)/2,
+	                             squaresize*winratio,
+	                             squaresize);
+				return 0;
+
+			case (KEY_F):
+				move_current_window(0, gap, gap, dw-(gap*2), dh-(gap*2));
+				return 0;
+
+			case (KEY_C):
+				move_current_window(1, 0,0,0,0); // 1:center
+				return 0;
+		}
+
+	return event;
+}
+
 /* active desktop, excluding the dock. */
 void
 get_display_bounds(int* x, int* y, int* w, int* h)
@@ -15,10 +154,8 @@ get_display_bounds(int* x, int* y, int* w, int* h)
 	CGPoint cursorLocation = CGEventGetLocation(event);
 	CFRelease(event);
 
-	// get the display which contains the cursor, that's the one we want to tile
-	// on
-	int numDisplays;
-	CGDirectDisplayID displays[16];
+	// get display which contains the cursor, that's the one we want to tile on
+	int numDisplays; CGDirectDisplayID displays[16];
 	CGGetDisplaysWithPoint(cursorLocation, 16, displays, &numDisplays);
 
 	HIRect bounds;
@@ -46,94 +183,22 @@ init()
 }
 
 
-static AXUIElementRef
-get_frontmost_app()
-{
-	pid_t pid; ProcessSerialNumber psn;
-	GetFrontProcess(&psn); GetProcessPID(&psn, &pid);
-	return AXUIElementCreateApplication(pid);
-}
-
-
-void
-move_current_window(int center, int x, int y, int w, int h)
-{
-	AXValueRef temp;
-	AXUIElementRef frontMostApp;
-	AXUIElementRef frontMostWindow;
-	CGSize windowSize;
-	CGPoint windowPosition;
-	windowPosition.x  = x;
-	windowPosition.y  = y;
-	windowSize.width  = w;
-	windowSize.height = h;
-
-	frontMostApp = get_frontmost_app();
-	AXUIElementCopyAttributeValue(
-		frontMostApp, kAXFocusedWindowAttribute, (CFTypeRef *)&frontMostWindow);
-
-	if (center) {
-
-	}
-
-	temp = AXValueCreate(kAXValueCGPointType, &windowPosition);
-	AXUIElementSetAttributeValue(frontMostWindow, kAXPositionAttribute, temp);
-	CFRelease(temp);
-
-	temp = AXValueCreate(kAXValueCGSizeType, &windowSize);
-	AXUIElementSetAttributeValue(frontMostWindow, kAXSizeAttribute, temp);
-	CFRelease(temp);
-}
-
-
-/* key event handler `return 0` means don't pass the shortcut to the rest */
-static CGEventRef event_handler(CGEventTapProxy p, CGEventType t, CGEventRef event, void* r) {
-	int repeating = CGEventGetIntegerValueField(event,kCGKeyboardEventAutorepeat);
-	int keycode   = CGEventGetIntegerValueField(event,kCGKeyboardEventKeycode);
-	int modifiers = (int)CGEventGetFlags(event);
-
-	modifiers &= (kCGEventFlagMaskShift   | kCGEventFlagMaskAlternate |
-		           kCGEventFlagMaskCommand | kCGEventFlagMaskControl   |
-		           kCGEventFlagMaskSecondaryFn);
-
-
-	/* // ANALYSING KEY CODES (EVENT VIEWER)
-	printf("is repeating: %d\n", repeating);
-	printf("keycode: %d\n", keycode);
-	printf("modifiers: (%d)\n\n", modifiers); */
-	if (modifiers == MOD_CMD+MOD_CTRL+MOD_OPT+MOD_SHIFT)
-		switch (keycode) {
-			case (KEY_S):
-				move_current_window(0, (dw-(winsize*winratio))/2,
-				            (dh-winsize)/2,
-	                     winsize*winratio,
-	                     winsize);
-				return 0; // don't do anything else with this shortcut.
-
-			case (KEY_F):
-				printf("", get_frontmost_app());
-				move_current_window(0, gap, gap, dw-(gap*2), dh-(gap*2));
-				return 0;
-
-			case (KEY_C):
-				printf("", get_frontmost_app());
-				move_current_window(1, 0,0,0,0); // 1:center
-				return 0;
-		}
-
-	return event;
-}
-
 /* create and run eventloop (a keytap from applicationservices) */
 int cr_eventloop() {
-	CFRunLoopSourceRef rlsrc; // run loop source
-	CGEventMask em = CGEventMaskBit(kCGEventKeyDown) | CGEventMaskBit(kCGEventFlagsChanged);
-	CFMachPortRef et = CGEventTapCreate(kCGSessionEventTap, kCGHeadInsertEventTap, 0, em, event_handler, 0);
+	CFRunLoopSourceRef rlsrc;
+	CGEventMask em = CGEventMaskBit(
+		kCGEventKeyDown) | CGEventMaskBit(kCGEventFlagsChanged);
+
+	CFMachPortRef et = CGEventTapCreate(
+		kCGSessionEventTap, kCGHeadInsertEventTap, 0, em, event_handler, 0);
 	if (!et) return 1; /* 1:failure, 0:success */
+
 	rlsrc = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, et, 0);
 	CFRunLoopAddSource(CFRunLoopGetCurrent(), rlsrc, kCFRunLoopCommonModes);
 	CGEventTapEnable(et, true);
 	CFRunLoopRun();
+
+	fprintf(stderr, "exiting...\n");
 	return 0; // sucess
 }
 
