@@ -36,7 +36,7 @@ use [karabiner](https://github.com/pqrs-org/Karabiner-Elements) to bind
 
 - <kbd>mod</kbd><kbd>y</kbd>: top left quarter
 - <kbd>mod</kbd><kbd>h</kbd>: left half
-- <kbd>mod</kbd><kbd>n</kbd>: bottom left quarter
+- <kbd>mod</kbd><kbd>b</kbd>: bottom left quarter
 
 ---
 

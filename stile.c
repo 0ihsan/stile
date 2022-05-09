@@ -173,8 +173,16 @@ init()
 		return 1;
 	}
 	get_display_bounds(&_, &_, &dw, &dh);
-	smallwidth = (dw*0.4916); // perfectly selctd for signcolumn+80column rule.
-	                          // nice.
+
+	/* width in KEY_A mode. perfectly selected for signcolumn plus 80 column
+	 * ruler
+	 *
+	 * font@terminus               [17]: dw*0.4916
+	 * font@firacode nerd font mono[14]: dw*0.52
+	 *
+	 */
+	smallwidth = (dw*0.52);
+
 	return 0;
 }
 
