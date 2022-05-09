@@ -55,7 +55,8 @@ move_current_window(int center, int x, int y, int w, int h)
 
 
 /* key event handler `return 0` means don't pass the shortcut to the rest */
-static CGEventRef event_handler(CGEventTapProxy p, CGEventType t, CGEventRef event, void* r) {
+static CGEventRef event_handler(CGEventTapProxy p, CGEventType t,
+                                CGEventRef event, void* r) {
 	int repeating = CGEventGetIntegerValueField(event,kCGKeyboardEventAutorepeat);
 	int keycode   = CGEventGetIntegerValueField(event,kCGKeyboardEventKeycode);
 	int modifiers = (int)CGEventGetFlags(event);
@@ -168,7 +169,8 @@ init()
 {
 	// is accessibility API autharized?
 	if (!(AXAPIEnabled() || AXIsProcessTrusted())) {
-		fprintf(stderr, "AXIsProcessTrusted returned false; does darwintiler have "
+		AXUIElementCreateSystemWide();
+		fprintf(stderr, "AXIsProcessTrusted returned false; does stile have "
 		                "accessibility API permissions?\n");
 		return 1;
 	}

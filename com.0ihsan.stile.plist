@@ -6,11 +6,19 @@
 	<true/>
 	<key>Label</key>
 	<string>com.0ihsan.stile</string>
+	<key>Nice</key>
+	<integer>-20</integer>
+	<key>ProcessType</key>
+	<string>Interactive</string>
 	<key>ProgramArguments</key>
 	<array>
 		<string>/usr/local/bin/stile</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
+	<key>StandardErrorPath</key>
+	<string>/tmp/stile.err.log</string>
+	<key>StandardOutPath</key>
+	<string>/tmp/stile.out.log</string>
 </dict>
 </plist>

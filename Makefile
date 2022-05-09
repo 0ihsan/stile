@@ -11,6 +11,7 @@ clean:
 
 install: stile
 	sudo install stile $(DESTDIR)/bin
+	sudo chmod -R 777 $(DESTDIR)/bin/stile
 
 uninstall: disable-service
 	sudo rm -rf $(DESTDIR)/bin/stile
@@ -23,7 +24,7 @@ service: install
 	launchctl kickstart -kp gui/501/com.0ihsan.stile
 
 disable-service:
-	pgrep stile && launchctl kill 15 gui/501/com.0ihsan.stile
+	pgrep stile && launchctl kill 15 gui/501/com.0ihsan.stile || true
 	launchctl disable gui/501/com.0ihsan.stile
 	# launchctl bootout gui/501 ${HOME}/Library/LaunchAgents/com.0ihsan.stile.plist
 	rm -rf ${HOME}/Library/LaunchAgents/com.0ihsan.stile.plist
