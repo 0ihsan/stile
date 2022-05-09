@@ -1,5 +1,5 @@
 float winratio = 4.0/3.0;
-int gap        = 0;
+int gap        = 10;
 
 /* height in KEY_S mode
  *
@@ -7,4 +7,4 @@ int gap        = 0;
  * font@firacode nerd font mono[14]: 750
  *
  */
-int mediumheight = 750;
+int mediumheight = 714;

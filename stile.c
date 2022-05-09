@@ -183,7 +183,7 @@ init()
 	 * font@firacode nerd font mono[14]: dw*0.52
 	 *
 	 */
-	smallwidth = (dw*0.52);
+	smallwidth = (dw*0.4916);
 
 	return 0;
 }
