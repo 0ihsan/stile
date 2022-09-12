@@ -1,9 +1,12 @@
 #include "config.h"
 #include "key.h"
+
+#include <stdlib.h>
+
 #include <ApplicationServices/ApplicationServices.h>
 #include <Carbon/Carbon.h>
 
-int _,dw,dh; // desktop with, desktop height (will be set in init())
+int _,dx,dy,dw,dh; // desktop with, desktop height (will be set in init())
 int smallwidth;
 
 
@@ -32,11 +35,11 @@ move_current_window(int center, int x, int y, int w, int h)
 
 	if (center) {
 		AXUIElementCopyAttributeValue(current_win,
-	                              	kAXSizeAttribute,
-	                              	(CFTypeRef*)&tempforsize);
+		                              kAXSizeAttribute,
+		                              (CFTypeRef*)&tempforsize);
 		AXValueGetValue(tempforsize, kAXValueCGSizeType, &winsiz);
-		winpos.x = (dw-winsiz.width)/2;
-		winpos.y = (dh-winsiz.height)/2;
+		winpos.x = (dx+dw-winsiz.width)/2;
+		winpos.y = (dy*2+dh-winsiz.height)/2;
 	} else {
 		winpos.x = x;
 		winpos.y = y;
@@ -46,11 +49,11 @@ move_current_window(int center, int x, int y, int w, int h)
 
 	temp = AXValueCreate(kAXValueCGPointType, &winpos);
 	AXUIElementSetAttributeValue(current_win, kAXPositionAttribute, temp);
-	CFRelease(temp);
 
 	temp = AXValueCreate(kAXValueCGSizeType, &winsiz);
 	AXUIElementSetAttributeValue(current_win, kAXSizeAttribute, temp);
 	CFRelease(temp);
+
 }
 
 
@@ -71,28 +74,39 @@ static CGEventRef event_handler(CGEventTapProxy p, CGEventType t,
 	printf("     keycode: %d\n", keycode);
 	printf("   modifiers: %d\n\n", modifiers); */
 
+
 	if (modifiers == MOD_CMD+MOD_CTRL+MOD_OPT+MOD_SHIFT)
 		switch (keycode) {
+
+			case (KEY_W):
+				system("open -a Safari");
+				return 0;
+
+			case (KEY_RETURN):
+				system("open -a Terminal");
+				return 0;
 
 			// center fixed small
 			case (KEY_A):
 				move_current_window(0,
-				                    (dw-smallwidth)/2, (dh-smallwidth)/2,
+				                    dx+(dw-smallwidth)/2, dy+(dh-smallwidth)/2,
 				                    smallwidth,        smallwidth);
 				return 0;
 
 			// center medium (ratio at config.h)
 			case (KEY_S):
 				move_current_window(0,
-				                    (dw-(mediumheight*winratio))/2,
-				                    (dh-mediumheight)/2,
+				                    dx+(dw-(mediumheight*winratio))/2,
+				                    dy+(dh-mediumheight)/2,
 				                    mediumheight*winratio,
 				                    mediumheight);
 				return 0;
 
 			// full screen w/gaps
 			case (KEY_F):
-				move_current_window(0, gap, gap, dw-gap*2, dh-gap*2);
+				move_current_window(0,
+				                    dx+gap,      dy+gap,
+				                    dw-gap*2, dh-gap*2);
 				return 0;
 
 			// center (same size)
@@ -102,37 +116,40 @@ static CGEventRef event_handler(CGEventTapProxy p, CGEventType t,
 
 			// left half
 			case (KEY_H):
-				move_current_window(0, gap, gap, (dw/2)-gap*1.5, dh-(gap*2));
+				move_current_window(0,
+				                    dx+gap,            dy+gap,
+				                    (dw/2)-gap*1.5, dh-gap*2);
 				return 0;
 
 			// top left quarter
 			case (KEY_Y):
-				move_current_window(0, gap,            gap,
+				move_current_window(0, dx+gap,            dy+gap,
 				                       (dw/2)-gap*1.5, (dh/2)-(gap*1.5));
 				return 0;
 
 			// bottom left quarter
 			case (KEY_B):
-				move_current_window(0, gap,              (dh/2)+(gap/2),
-				                       (dw/2)-(gap*1.5), (dh/2)-(gap*1.5));
+				move_current_window(0,
+				                    dx+gap,              dy+(dh/2)+(gap/2),
+				                    (dw/2)-(gap*1.5),   (dh/2)-(gap*1.5));
 				return 0;
 
 			// right half
 			case (KEY_L):
-				move_current_window(0, (dw/2)+(gap/2), gap,
+				move_current_window(0, dx+(dw/2)+(gap/2),   dy+gap,
 				                       (dw/2)-(gap*1.5), dh-(gap*2));
 				return 0;
 
 			// top right quarter
 			case (KEY_I):
-				move_current_window(0, (dw/2)+(gap/2), gap,
+				move_current_window(0, dx+(dw/2)+(gap/2),   dy+gap,
 				                       (dw/2)-(gap*1.5), (dh/2)-(gap*1.5));
 				return 0;
 
 			// bottom right quarter
 			case (KEY_M):
-				move_current_window(0, (dw/2)+(gap/2),   (dh/2)+(gap/2),
-				                       (dw/2)-(gap*1.5), (dh/2)-(gap*1.5));
+				move_current_window(0, dx+(dw/2)+(gap/2),   dy+(dh/2)+(gap/2),
+				                       (dw/2)-(gap*1.5),   (dh/2)-(gap*1.5));
 				return 0;
 
 		}
@@ -167,14 +184,15 @@ get_display_bounds(int* x, int* y, int* w, int* h)
 int
 init()
 {
-	// is accessibility API autharized?
 	if (!(AXAPIEnabled() || AXIsProcessTrusted())) {
 		AXUIElementCreateSystemWide();
-		fprintf(stderr, "AXIsProcessTrusted returned false; does stile have "
-		                "accessibility API permissions?\n");
+		fprintf(stderr, "AXIsProcessTrusted returned false; try giving"
+		                " accessibility permissions on\nPreferences ->"
+		                " Security&Privacy -> Unlock -> Accessibility "
+		                "-> + -> /pathto/stile\n");
 		return 1;
 	}
-	get_display_bounds(&_, &_, &dw, &dh);
+	get_display_bounds(&dx, &dy, &dw, &dh);
 
 	/* width in KEY_A mode. perfectly selected for signcolumn plus 80 column
 	 * ruler
@@ -190,7 +208,9 @@ init()
 
 
 /* create and run eventloop (a keytap from applicationservices) */
-int cr_eventloop() {
+int
+cr_eventloop()
+{
 	CFRunLoopSourceRef rlsrc;
 	CGEventMask em = CGEventMaskBit(
 		kCGEventKeyDown) | CGEventMaskBit(kCGEventFlagsChanged);

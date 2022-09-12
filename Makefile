@@ -1,7 +1,7 @@
 CC=cc
 DESTDIR=/usr/local
 CFLAGS = -w -Wdeprecated-declarations
-FRAMEWORKS =  -framework ApplicationServices -framework Carbon
+FRAMEWORKS = -framework ApplicationServices -framework Carbon
 
 stile: stile.c
 	${CC} $< -o $@ ${CFLAGS} ${FRAMEWORKS}
