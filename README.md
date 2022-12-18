@@ -34,15 +34,15 @@ use [karabiner](https://github.com/pqrs-org/Karabiner-Elements) to bind
 
 ---
 
-- <kbd>mod</kbd><kbd>y</kbd>: top left quarter
-- <kbd>mod</kbd><kbd>h</kbd>: left half
-- <kbd>mod</kbd><kbd>b</kbd>: bottom left quarter
+- <kbd>mod</kbd><kbd>u</kbd>: top left quarter
+- <kbd>mod</kbd><kbd>j</kbd>: left half
+- <kbd>mod</kbd><kbd>n</kbd>: bottom left quarter
 
 ---
 
-- <kbd>mod</kbd><kbd>i</kbd>: top right quarter
-- <kbd>mod</kbd><kbd>l</kbd>: right half
-- <kbd>mod</kbd><kbd>m</kbd>: bottom right quarter
+- <kbd>mod</kbd><kbd>p</kbd>: top right quarter
+- <kbd>mod</kbd><kbd>;</kbd>: right half
+- <kbd>mod</kbd><kbd>l</kbd>: bottom right quarter
 
 ---
 
@@ -51,6 +51,8 @@ use [karabiner](https://github.com/pqrs-org/Karabiner-Elements) to bind
 - <kbd>mod</kbd><kbd>a</kbd>: centered small size
 - <kbd>mod</kbd><kbd>c</kbd>: center without changing window size
 
+
+note: keybindings are layout agnostic. if you use, say dvorak, it still works like qwerty.
 
 ## uninstall
 ```sh
