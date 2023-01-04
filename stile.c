@@ -123,7 +123,7 @@ int init() {
 	 * font@firacode nerd font mono[14]: dw*0.52
 	 *
 	 */
-	smallwidth = (dw*0.4916);
+	smallwidth = (dw*0.4916*0.8);
 	return 0;
 }
 

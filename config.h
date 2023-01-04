@@ -1,5 +1,5 @@
 float winratio = 3.8/2.5;
-int gap        = 51; // 28; // 46; // 4;
+int gap        = 84; // 51; // 28; // 46; // 4;
 
 /* height in KEY_S mode
  *
