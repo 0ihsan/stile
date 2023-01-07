@@ -16,9 +16,5 @@
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
-	<key>StandardErrorPath</key>
-	<string>/tmp/stile.err.log</string>
-	<key>StandardOutPath</key>
-	<string>/tmp/stile.out.log</string>
 </dict>
 </plist>
