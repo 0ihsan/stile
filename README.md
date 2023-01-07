@@ -16,10 +16,11 @@ suckless macos window tiler that compiles and works without shit.
 ```sh
 sudo make install && sudo make service
 ```
-then allow access to `stile` in Accessibility Settings
+then add `stile` to Accessibility
 ```
-Preferences -> Security & Privacy -> Lock Icon -> Accessibility -> + -> /usr/local/bin/stile
+System Settings -> Privacy & Security -> Accessibility -> + -> /usr/local/bin/stile
 ```
+each time you compile stile you have to remove and re-add stile here.
 
 ## use
 
