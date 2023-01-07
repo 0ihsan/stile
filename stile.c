@@ -64,7 +64,8 @@ static CGEventRef event_handler(CGEventTapProxy p, CGEventType t, CGEventRef eve
 	printf("   modifiers: %d\n\n", modifiers);
 	printf("is fwd slash: %d\n", keycode == KEY_SLASH_FORWARD); */
 
-	if (modifiers == MOD_CMD+MOD_CTRL+MOD_OPT+MOD_SHIFT)
+	// if (modifiers == MOD_CMD+MOD_CTRL+MOD_OPT+MOD_SHIFT)
+	if (modifiers == MOD_FN)
 		switch (keycode) { /* based on dvorak layout */
 			case (KEY_W):      system("open -a Safari"); return 0;
 			case (KEY_RETURN): system("open -a Terminal"); return 0;

@@ -24,13 +24,12 @@ Preferences -> Security & Privacy -> Lock Icon -> Accessibility -> + -> /usr/loc
 
 ## use
 
-use [karabiner](https://github.com/pqrs-org/Karabiner-Elements) to bind
-<kbd>ctrl</kbd>+<kbd>opt</kbd>+<kbd>cmd</kbd>+<kbd>shift</kbd> to
-<kbd>caps-lock</kbd> (or at least i do) so you don't get your fingers paralyzed.
+it is highly recommended to remap <kbd>fn/globe</kbd> to <kbd>caps-lock</kbd>
+in `settings -> keyboard -> keyboard shortcuts -> modifier keys -> caps lock
+-> globe` (or at least i do).
 
 
-<kbd>mod</kbd> means <kbd>ctrl</kbd>+<kbd>opt</kbd>+<kbd>cmd</kbd>+<kbd>shift</kbd>
-(aka <kbd>caps-lock</kbd>)
+<kbd>mod</kbd>: <kbd>fn</kbd> (aka <kbd>caps-lock</kbd>)
 
 ---
 
