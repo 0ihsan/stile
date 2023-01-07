@@ -1,23 +1,22 @@
 # stile
 
-suckless macos window tiler that works and compiles without shit.
+suckless macos window tiler that compiles and works without shit.
 
 ## features
 
+- no cmake
+- no autotools
+- simple as fuck
 - no external dependencies (only macOS)
-- no config files (edit the source code. it is simple, i promise.)
-- written in plain C.
-- simple as fuck.
-- no shit.
-- does the job. ({quarter, half, mono} tiling, pixel perfect centering)
+- {quarter, half, mono} tiling, centering
+- no config files (just edit the source code)
 
 ## install
 
 ```sh
-sudo make install
-make service
+sudo make install && sudo make service
 ```
-then allow access to `stile` in Apple Accessibility Services API
+then allow access to `stile` in Accessibility Settings
 ```
 Preferences -> Security & Privacy -> Lock Icon -> Accessibility -> + -> /usr/local/bin/stile
 ```
@@ -51,16 +50,13 @@ in `settings -> keyboard -> keyboard shortcuts -> modifier keys -> caps lock
 - <kbd>mod</kbd><kbd>c</kbd>: center without changing window size
 
 
-note: keybindings are layout agnostic. if you use, say dvorak, it still works like qwerty.
+note: keybindings are layout agnostic. if you use, say dvorak, it still works like **qwerty**.
 
 ## uninstall
 ```sh
-sudo make disable-service
 sudo make uninstall
 ```
 
-## todo
-
-- [ ] add: package: homebrew
+---
 
 inspired/reduced from [darwintiler](https://github.com/veryjos/darwintiler)
