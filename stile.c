@@ -62,7 +62,6 @@ static CGEventRef event_handler(CGEventTapProxy p, CGEventType t, CGEventRef eve
 }
 
 main(){if(!AXIsProcessTrusted()){AXUIElementCreateSystemWide();fprintf(stderr,"Settings > Privacy & Security > Accessibility > add /usr/local/bin/stile\n");return 1;}
-
 	CFRunLoopSourceRef rlsrc;CGEventMask em=CGEventMaskBit(kCGEventKeyDown)|CGEventMaskBit(kCGEventFlagsChanged); CFMachPortRef et=CGEventTapCreate(kCGSessionEventTap,kCGHeadInsertEventTap,0,em,event_handler,0);
 	if(!et)return 1;
 	rlsrc=CFMachPortCreateRunLoopSource(kCFAllocatorDefault,et,0);
