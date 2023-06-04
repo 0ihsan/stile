@@ -14,19 +14,19 @@ suckless macos window tiler that compiles and works without shit.
 ## install
 
 ```sh
-sudo make install && sudo make service
+make install && make service
 ```
 then add `stile` to Accessibility
 ```
-System Settings -> Privacy & Security -> Accessibility -> + -> /usr/local/bin/stile
+Settings > Privacy & Security > Accessibility > add /usr/local/bin/stile\n
 ```
 each time you compile stile you have to remove and re-add stile here.
 
 ## use
 
-it is highly recommended to remap <kbd>fn/globe</kbd> to <kbd>caps-lock</kbd>
+it is highly recommended to remap <kbd>caps-lock</kbd> to <kbd>fn/globe</kbd>
 in `settings -> keyboard -> keyboard shortcuts -> modifier keys -> caps lock
--> globe` (or at least i do).
+-> globe`.
 
 
 <kbd>mod</kbd>: <kbd>fn</kbd> (aka <kbd>caps-lock</kbd>)
@@ -58,7 +58,7 @@ note: keybindings are layout agnostic. if you use, say dvorak, it still works li
 sudo make uninstall
 ```
 
-## LICENSE
+## LICENSE: MIT
 
 Copyright 0ihsan
 
