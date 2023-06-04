@@ -18,7 +18,7 @@ make install && make service
 ```
 then add `stile` to Accessibility
 ```
-Settings > Privacy & Security > Accessibility > add /usr/local/bin/stile\n
+Settings > Privacy & Security > Accessibility > add /usr/local/bin/stile
 ```
 each time you compile stile you have to remove and re-add stile here.
 
