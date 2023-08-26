@@ -53,6 +53,15 @@ in `settings -> keyboard -> keyboard shortcuts -> modifier keys -> caps lock
 
 note: keybindings are layout agnostic. if you use, say dvorak, it still works like **qwerty**.
 
+gaps can be set in `com.0ihsan.stile.plist` under `ProgramArguments`. example (32px):
+```
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/local/bin/stile</string>
+		<string>32</string>
+	</array>
+```
+
 ## uninstall
 ```sh
 sudo make uninstall
